@@ -20,7 +20,7 @@ export class KeysService {
   }
 
   getKeyDetail(key): Observable<any> {
-    return this.http.get(this.KEY_DETAIL.replace('{keyName}', key));
+    return this.http.get(this.urlUtil.getBaseUrl() + this.KEY_DETAIL.replace('{keyName}', key));
   }
 
 }

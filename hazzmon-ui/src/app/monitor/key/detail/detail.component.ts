@@ -19,13 +19,13 @@ export class DetailComponent implements OnInit {
     this.route.params.subscribe(prms => {
       if (prms['keyName']) {
         this.keyName = prms['keyName'];
-        this.loadData(prms['keyName']);
+        this.loadData();
       }
     });
   }
 
-  loadData(key) {
-    this.keysService.getKeyDetail(key)
+  loadData() {
+    this.keysService.getKeyDetail(this.keyName)
       .subscribe(response => {
         this.keyDetail = response;
       });

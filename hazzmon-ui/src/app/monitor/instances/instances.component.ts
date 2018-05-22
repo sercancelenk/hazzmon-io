@@ -21,7 +21,6 @@ export class InstancesComponent implements OnInit {
     this.instancesService.getInstances()
       .subscribe(response => {
         this.instances = response;
-        console.log(this.instances);
       });
   }
 

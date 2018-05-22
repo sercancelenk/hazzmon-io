@@ -5,19 +5,18 @@
       <small style="width: 50% !important;">
         <i class="fa fa-sticky-note-o" aria-hidden="true"></i>&nbsp;you can see keys in your hazelcast cluster
       </small>
-      <button type="button" class="btn btn-dark btn-sm pull-right" (click)="loadData()"><i class="fa fa-refresh"></i></button>
     </div>
     <div class="card-body">
       <p-dataTable [value]="data" sortField="key" sortOrder="1"
                    [paginator]="true" [rows]="500" [responsive]="true"
                    [loading]="loading" loadingIcon="fa-spinner"  #dt>
-        <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="instanceName" header="Instance Name" [hidden]="false"></p-column>
-        <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="beanName" header="Bean Name" [hidden]="false" [filter]="true" filterMatchMode="equals">
+        <!--<p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="instanceName" header="Instance Name" [hidden]="false"></p-column>-->
+        <p-column [style]="{'width':'18%','padding':'-0.25em !important'}" field="beanName" header="Bean Name" [hidden]="false" [filter]="true" filterMatchMode="equals">
           <ng-template pTemplate="filter" let-col>
             <p-dropdown [options]="beanNames" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
           </ng-template>
         </p-column>
-        <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="mapName" header="Map Name" [hidden]="false" [filter]="true" filterMatchMode="equals">
+        <p-column [style]="{'width':'18%','padding':'-0.25em !important'}" field="mapName" header="Map Name" [hidden]="false" [filter]="true" filterMatchMode="equals">
           <ng-template pTemplate="filter" let-col>
             <p-dropdown [options]="mapNames" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
           </ng-template>
@@ -32,14 +31,17 @@
           </ng-template>
         </p-column>
 
-        <p-column [filter]="true" filterPlaceholder="Search Key" [style]="{'width':'26%','padding':'-0.25em !important'}" [sortable]="true" [hidden]="false">
-          <ng-template type="header" pTemplate="header">
-            Key
+        <p-column [filter]="true" header="Key Name" field="key" filterMatchMode="contains" filterPlaceholder="Search Key" [style]="{'width':'26%','padding':'-0.25em !important'}" [sortable]="true" [hidden]="false">
+        </p-column>
+        <p-column styleClass="col-button text-center" [style]="{'width':'3%','padding':'-0.25em !important'}">
+          <ng-template pTemplate="header">
+            <button type="button" pButton icon="fa-refresh" class="bg-dark" (click)="loadData()"></button>
           </ng-template>
           <ng-template let-data="rowData" pTemplate="body">
-            <a href="#" class="text-info" [routerLink]="['/hazzmon-ui/key/detail', data.key ]">{{data.key}}</a>
+            <a class="text-info" [routerLink]="['/hazzmon-ui/key/detail', data.key ]"><i class="fa fa-search"></i></a>
           </ng-template>
         </p-column>
+
 
       </p-dataTable>
     </div>

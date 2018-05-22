@@ -11,7 +11,6 @@ export class UrlutilService {
       const urlMatches = /(.*)\/hazzmon-ui*/.exec(window.location.href);
       this.baseUrl = urlMatches[1];
     }
-    console.log(this.baseUrl);
     return this.baseUrl;
   }
 
