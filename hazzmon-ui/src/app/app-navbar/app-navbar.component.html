@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" href="#"><img src="webjars/hazzmon-ui/assets/img/logo.png" width="250" height="70"/> </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#" [routerLink]="'/hazzmon-ui/instances'">instances</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" [routerLink]="'/hazzmon-ui/members'">members</a>
+      </li>
+
+      <li class="dropdown nav-item">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Keys
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#" [routerLink]="'/hazzmon-ui/key/list'"><i class="fa fa-list"></i>&nbsp;list</a>
+          <a class="dropdown-item" href="#" [routerLink]="'/hazzmon-ui/key/eviction'"><i class="fa fa-recycle"></i>&nbsp;eviction</a>
+        </div>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <h6 class="text-white small">hazzmon@version 1.0</h6>
+    </form>
+  </div>
+</nav>

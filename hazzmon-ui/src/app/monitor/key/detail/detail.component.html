@@ -1,0 +1,52 @@
+<div class="padding-template">
+  <div class="card">
+    <div class="card-header">
+      <h5 class=" text-dark"><i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;key detail</h5>
+      <small style="width: 50% !important;">
+        <i class="fa fa-sticky-note-o" aria-hidden="true"></i>&nbsp;you can see key detail.
+      </small>
+      <button type="button" class="btn btn-dark btn-sm pull-right" (click)="loadData(keyDetail.key)"><i class="fa fa-refresh"></i></button>
+    </div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <tr>
+          <td><h6 class="text-dark"><i class="fa fa-arrow-circle-right"></i>&nbsp;Key Name</h6></td>
+          <td><span class="text-dar">{{keyDetail.key}}</span></td>
+          <td colspan="4">
+            <span class="text-success pull-right" *ngIf="keyDetail.status"><i class="fa fa-circle"></i></span>
+            <span class="text-danger pull-right" *ngIf="!keyDetail.status"><i class="fa fa-circle"></i></span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h6 class="text-dark"><i class="fa fa-arrow-circle-right"></i>&nbsp;Instance Name</h6>
+          </td>
+          <td>
+              <span class="text-dark">{{keyDetail.instanceName}}</span>
+          </td>
+          <td>
+            <h6 class="text-dark"><i class="fa fa-arrow-circle-right"></i>&nbsp;Bean Name</h6>
+          </td>
+          <td>
+              <span class="text-dark">{{keyDetail.beanName}}</span>
+          </td>
+          <td colspan="3">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h6 class="text-dark"><i class="fa fa-arrow-circle-right"></i>&nbsp;Map Name</h6>
+          </td>
+          <td>{{keyDetail.mapName}}</td>
+          <td>
+            <h6 class="text-dark"><i class="fa fa-arrow-circle-right"></i>&nbsp;Map Type</h6>
+          </td>
+          <td>{{keyDetail.mapType}}</td>
+          <td>
+            <h6 class="text-dark"><i class="fa fa-arrow-circle-right"></i>&nbsp;TTL</h6>
+          </td>
+          <td>{{keyDetail.timeToLive}} {{keyDetail.timeToLiveType}}</td>
+        </tr>
+      </table>
+  </div>
+</div>

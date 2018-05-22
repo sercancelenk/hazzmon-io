@@ -1,0 +1,47 @@
+<div class="padding-template">
+  <div class="card">
+    <div class="card-header">
+      <h5 class=" text-dark"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;keys</h5>
+      <small style="width: 50% !important;">
+        <i class="fa fa-sticky-note-o" aria-hidden="true"></i>&nbsp;you can see keys in your hazelcast cluster
+      </small>
+      <button type="button" class="btn btn-dark btn-sm pull-right" (click)="loadData()"><i class="fa fa-refresh"></i></button>
+    </div>
+    <div class="card-body">
+      <p-dataTable [value]="data" sortField="key" sortOrder="1"
+                   [paginator]="true" [rows]="500" [responsive]="true"
+                   [loading]="loading" loadingIcon="fa-spinner"  #dt>
+        <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="instanceName" header="Instance Name" [hidden]="false"></p-column>
+        <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="beanName" header="Bean Name" [hidden]="false" [filter]="true" filterMatchMode="equals">
+          <ng-template pTemplate="filter" let-col>
+            <p-dropdown [options]="beanNames" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+          </ng-template>
+        </p-column>
+        <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="mapName" header="Map Name" [hidden]="false" [filter]="true" filterMatchMode="equals">
+          <ng-template pTemplate="filter" let-col>
+            <p-dropdown [options]="mapNames" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+          </ng-template>
+        </p-column>
+        <p-column [style]="{'width':'12%','padding':'-0.25em !important'}" field="mapType" header="Map Type" [hidden]="false"></p-column>
+        <p-column [style]="{'width':'10%','padding':'-0.25em !important'}" align="left">
+          <ng-template type="header" pTemplate="header">
+            TTL
+          </ng-template>
+          <ng-template let-data="rowData" pTemplate="body">
+            {{data.timeToLive}} {{data.timeToLiveType}}
+          </ng-template>
+        </p-column>
+
+        <p-column [filter]="true" filterPlaceholder="Search Key" [style]="{'width':'26%','padding':'-0.25em !important'}" [sortable]="true" [hidden]="false">
+          <ng-template type="header" pTemplate="header">
+            Key
+          </ng-template>
+          <ng-template let-data="rowData" pTemplate="body">
+            <a href="#" class="text-info" [routerLink]="['/hazzmon-ui/key/detail', data.key ]">{{data.key}}</a>
+          </ng-template>
+        </p-column>
+
+      </p-dataTable>
+    </div>
+  </div>
+</div>

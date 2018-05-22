@@ -177,5 +177,3 @@ tmp/
 # Mac OSX Finder files.
 **/.DS_Store
 .DS_Store/
-node/
-hazzmon-ui/

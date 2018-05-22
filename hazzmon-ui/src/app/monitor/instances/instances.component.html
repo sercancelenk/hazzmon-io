@@ -1,0 +1,45 @@
+<div class="padding-template">
+  <div class="card">
+    <div class="card-header">
+      <h5 class=" text-dark"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;instances</h5>
+      <small  class=" text-dark" style="width: 50% !important;">
+        <i class="fa fa-sticky-note-o" aria-hidden="true"></i>&nbsp;You can see hazelcast instances in your cluster
+      </small>
+      <button type="button" class="btn btn-dark btn-sm pull-right" (click)="loadData()"><i class="fa fa-refresh"></i></button>
+    </div>
+    <div class="card-body">
+      <p-dataTable [value]="instances" sortField="key" sortOrder="1"
+                   [paginator]="true" [rows]="500" [responsive]="true"
+                   [loading]="loading" loadingIcon="fa-spinner">
+        <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="beanName" header="Bean Name" [hidden]="false"></p-column>
+        <p-column [style]="{'width':'30%','padding':'-0.25em !important'}" field="instanceName" header="Instance Name" [hidden]="false"></p-column>
+        <p-column [style]="{'width':'45%','padding':'-0.25em !important'}" align="left">
+          <ng-template type="header" pTemplate="header">
+            Stats
+          </ng-template>
+          <ng-template let-instances="rowData" pTemplate="body">
+            <table class="table table-striped">
+              <tr>
+                <td>Distributed Map Count</td>
+                <td><span class="text-dark">:&nbsp;{{instances.totalDistributedMapCount}}</span></td>
+              </tr>
+              <tr>
+                <td>Key Count in Distributed Map</td>
+                <td><span class="text-dark">:&nbsp;{{instances.totalKeyCountInDistributedMaps}}</span></td>
+              </tr>
+              <tr>
+                <td>Replicated Map Count</td>
+                <td><span class="text-dark">:&nbsp;{{instances.totalReplicatedMapCount}}</span></td>
+              </tr>
+              <tr>
+                <td>Key Count in Replicated Map</td>
+                <td><span class="text-dark">:&nbsp;{{instances.totalKeyCountInReplicatedMaps}}</span></td>
+              </tr>
+            </table>
+          </ng-template>
+        </p-column>
+
+      </p-dataTable>
+    </div>
+  </div>
+</div>

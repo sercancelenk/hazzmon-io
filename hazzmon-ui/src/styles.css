@@ -1,0 +1,15 @@
+body {
+  padding-top: 80px;
+}
+.starter-template {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.padding-template {
+  padding: 3rem 1.5rem;
+}
+
+.nopadding {
+  padding: -0.25em !important;
+}
