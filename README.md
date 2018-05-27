@@ -10,10 +10,10 @@ You may choose how to assemble them as you like.
 
 ```maven
     <dependency>
-			<groupId>byzas.libs</groupId>
-			<artifactId>hazzmon-core</artifactId>
-			<version>1.1</version>
-		</dependency>
+	<groupId>byzas.libs</groupId>
+	<artifactId>hazzmon-core</artifactId>
+	<version>1.1</version>
+    </dependency>
     
     <dependency>
 			<groupId>byzas.libs</groupId>
