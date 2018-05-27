@@ -4,6 +4,11 @@ A keys monitoring and management library for Java projects, app only needs one-l
 - 1.1 Core Initial commit. 
 - 1.1 UI Initial commit.
 
+# System Requirements
+
+1. Spring Framework Architecture
+2. Hazelcast +3.7.9
+
 # Getting started
 
 You may choose how to assemble them as you like.
