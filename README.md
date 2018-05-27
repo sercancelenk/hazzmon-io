@@ -16,19 +16,27 @@ You may choose how to assemble them as you like.
     </dependency>
     
     <dependency>
-			<groupId>byzas.libs</groupId>
-			<artifactId>hazzmon-ui</artifactId>
-			<version>1.1</version>
-		</dependency>
+	<groupId>byzas.libs</groupId>
+	<artifactId>hazzmon-ui</artifactId>
+	<version>1.1</version>
+    </dependency>
 ```
 
 # Usage
 
-1. Add library to your classpath.
-2. Add @EnableHazzmonListener annotation to your configuration.
-3. Then go to /hazzmon-ui.html page.
-4. And see monitoring ui.
-
+From Source:
+```shell
+1.  git clone https://github.com/sercancelenk/hazzmon-io
+2.  cd hazzmon-io
+3.  cd hazzmon-core
+4.  mvn clean install [-DskipTests]
+5.  cd ../hazzmon-ui
+6.  mvn -Pui-build clean process-resources [-DskipTests] && mvn install [-DskipTests]
+7.  Add library to your classpath.
+8.  Add @EnableHazzmonListener annotation to your configuration.
+9.  Then go to /hazzmon-ui.html page.
+10. And see monitoring ui.
+```
 # How does it work?
 
 1. Hazzmon-core library setup hazzmon-api endpoints for your usage.
