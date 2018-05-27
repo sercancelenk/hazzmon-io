@@ -10,24 +10,17 @@
     <div class="card-body">
       <p-dataTable [value]="members" sortField="key" sortOrder="1"
                    [paginator]="true" [rows]="500" [responsive]="true"
-                   [loading]="loading" loadingIcon="fa-spinner">
+                   [loading]="loading" loadingIcon="fa-spinner" #dd>
         <p-column [style]="{'width':'5%','padding':'-0.25em !important'}" field="member.id" header="Id" [hidden]="false"></p-column>
         <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="member.uuid" header="UUID" [hidden]="false"></p-column>
+        <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="instanceName" header="Instance Name" [hidden]="false"></p-column>
         <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="member.inetAddress" header="InetAddress" [hidden]="false"></p-column>
         <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="member.port" header="Port" [hidden]="false"></p-column>
         <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="member.socketAddress" header="SocketAddress" [hidden]="false"></p-column>
         <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="member.inetSocketAddress" header="InetSocketAddress" [hidden]="false"></p-column>
-        <!--<p-column [style]="{'width':'10%','padding':'-0.25em !important'}" align="left">-->
-          <!--<ng-template type="header" pTemplate="header">-->
-            <!--Version-->
-          <!--</ng-template>-->
-          <!--<ng-template let-members="rowData" pTemplate="body">-->
-            <!--Major:{{members.member.version.major}} Minor:{{members.member.version.minor}} Patch:{{members.member.version.patch}}-->
-          <!--</ng-template>-->
-        <!--</p-column>-->
-        <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="instanceName" header="Instance Name" [hidden]="false"></p-column>
-
+        
       </p-dataTable>
+
     </div>
   </div>
 </div>

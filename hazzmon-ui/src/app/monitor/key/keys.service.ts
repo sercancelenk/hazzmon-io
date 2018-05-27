@@ -9,7 +9,7 @@ export class KeysService {
   public LIST_KEYS = '/hazzmon-api/list/keys';
   public KEY_DETAIL = '/hazzmon-api/detail/key/{keyName}';
   public KEY_VALUE = '/hazzmon-api/value/key/{keyName}';
-  public EVICT_KEY = '/hazzmon-api/evict'
+  public EVICT_KEY = '/hazzmon-api/evict';
 
   constructor(private http: HttpClient,
               private urlUtil: UrlutilService) {

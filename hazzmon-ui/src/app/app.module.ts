@@ -12,7 +12,6 @@ import {MembersService} from './monitor/members/members.service';
 import {InstancesService} from './monitor/instances/instances.service';
 import {UrlutilService} from './monitor/common/service/urlutil.service';
 import {PrettyJsonModule} from 'angular2-prettyjson';
-import {ConfirmationPopoverModule} from "angular-confirmation-popover";
 
 @NgModule({
   declarations: [AppComponent, AppNavbarComponent],

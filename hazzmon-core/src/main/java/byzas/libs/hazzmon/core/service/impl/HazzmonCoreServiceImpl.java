@@ -338,8 +338,7 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
                 keysToRemove.addAll(instance.getReplicatedMap(configName).keySet().stream().filter(s -> s.toString().startsWith(keyWithoutAsterisk)).map(s -> s.toString()).collect(Collectors.toList()));
             }
         } else {
-            for (Iterator iterator = configKeyset.iterator(); iterator.hasNext(); ) {
-                String configName = (String) iterator.next();
+            for (Iterator iterator = configKeyset.iterator(); iterator.hasNext(); ) { String configName = (String) iterator.next();
 
                 keysToRemove.addAll(instance.getMap(configName).keySet().stream().filter(s -> s.toString().equals(keyWithoutAsterisk)).map(s -> s.toString()).collect(Collectors.toList()));
             }

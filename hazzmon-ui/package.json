@@ -27,7 +27,6 @@
     "angular-confirmation-popover": "^4.1.0",
     "angular-webstorage-service": "^1.0.2",
     "angular2-prettyjson": "^3.0.1",
-    "angular2-toaster": "4.0.1",
     "bootstrap": "^4.1.1",
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
@@ -41,7 +40,7 @@
   },
   "devDependencies": {
     "@angular/cli": "~1.7.3",
-    "@angular/compiler-cli": "^6.0.0",
+    "@angular/compiler-cli": "~5.2.6",
     "@angular/language-service": "^5.2.0",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",

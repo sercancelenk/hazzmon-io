@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {SelectItem} from "primeng/api";
-import {KeysService} from "../keys.service";
+import {SelectItem} from 'primeng/api';
+import {KeysService} from '../keys.service';
 
 @Component({
   selector: 'app-eviction',
@@ -16,8 +16,6 @@ export class EvictionComponent implements OnInit {
     public mapNames: SelectItem[];
     public selectedKeysForEviction: any[] = [];
     public keyTermForEviction: String = '';
-    public message='dasdasd';
-    public title='vgsdgfsg';
 
 
     constructor(private keysService: KeysService) { }
@@ -66,34 +64,32 @@ export class EvictionComponent implements OnInit {
     evictSelectedKeys() {
 
         const keysTmp = [];
-        if(this.selectedKeysForEviction != undefined && this.selectedKeysForEviction != null
-            && this.selectedKeysForEviction.length > 0){
-            for(let key of this.selectedKeysForEviction){
+        if (this.selectedKeysForEviction !== undefined && this.selectedKeysForEviction !== null
+            && this.selectedKeysForEviction.length > 0) {
+            for (const key of this.selectedKeysForEviction) {
                 keysTmp.push(key.key);
             }
         }
-        let evictionRequest = {
+        const evictionRequest = {
             bean: 'all',
             keys: keysTmp
         };
         this.keysService.evictKeys(evictionRequest)
-            .subscribe(response =>{
-                console.log(response);
+            .subscribe(response => {
                 this.loadData();
-            })
+            });
     }
 
     evictForTerm() {
 
-        let evictionRequest = {
+        const evictionRequest = {
             bean: 'all',
             keys: [this.keyTermForEviction]
         };
         this.keysService.evictKeys(evictionRequest)
-            .subscribe(response =>{
-                console.log(response);
+            .subscribe(response => {
                 this.loadData();
-            })
+            });
     }
 
     public toInt(num: string) {

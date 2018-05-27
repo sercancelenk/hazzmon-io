@@ -9,8 +9,8 @@ import {ButtonModule} from 'primeng/button';
 import {CardModule} from 'primeng/card';
 import {DetailComponent} from './detail/detail.component';
 import {EvictionComponent} from './eviction/eviction.component';
-import {FormsModule} from "@angular/forms";
-import {ConfirmationPopoverModule} from "angular-confirmation-popover";
+import {FormsModule} from '@angular/forms';
+import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
 
 
 @NgModule({
