@@ -6,24 +6,27 @@
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="#" [routerLink]="'/hazzmon-ui/instances'">instances</a>
+        <a class="nav-link" href="#" [routerLink]="'/hazzmon-ui/instances'"><i class="fa fa-server" aria-hidden="true"></i>&nbsp;instances</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" [routerLink]="'/hazzmon-ui/members'">members</a>
+        <a class="nav-link" href="#" [routerLink]="'/hazzmon-ui/members'"><i class="fa fa-object-group" aria-hidden="true"></i>&nbsp;members</a>
       </li>
 
       <li class="dropdown nav-item">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Keys
-        </button>
+        <!--<button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+          <!--Keys-->
+        <!--</button>-->
+        <a class="nav-link" href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-key" aria-hidden="true"></i>&nbsp;keys
+        </a>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#" [routerLink]="'/hazzmon-ui/key/list'"><i class="fa fa-list"></i>&nbsp;list</a>
-          <a class="dropdown-item" href="#" [routerLink]="'/hazzmon-ui/key/eviction'"><i class="fa fa-recycle"></i>&nbsp;eviction</a>
+          <a class="dropdown-item" href="#" [routerLink]="'/hazzmon-ui/key/list'"><i class="fa fa-list-alt"></i>&nbsp;list</a>
+          <a class="dropdown-item" href="#" [routerLink]="'/hazzmon-ui/key/eviction'"><i class="fa fa-trash"></i>&nbsp;eviction</a>
         </div>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
-      <h6 class="text-white small">hazzmon@version 1.0</h6>
+      <h6 class="text-white small">hazzmon[version={{appVersion}}]</h6>
     </form>
   </div>
 </nav>

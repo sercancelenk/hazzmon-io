@@ -1,9 +1,10 @@
 package byzas.libs.hazzmon.core.service;
 
-import com.hazelcast.core.HazelcastInstance;
 import byzas.libs.hazzmon.core.model.ClusterMemberInfo;
+import byzas.libs.hazzmon.core.model.EvictRequest;
 import byzas.libs.hazzmon.core.model.HazelcastInstanceInfo;
 import byzas.libs.hazzmon.core.model.Key;
+import com.hazelcast.core.HazelcastInstance;
 
 import java.util.List;
 import java.util.Map;
@@ -26,5 +27,9 @@ public interface HazzmonCoreService {
 
     List<Key> getKeysBy(HazelcastInstance instance, String beanName);
 
+    Object getValueOfKey(String keyName);
+
     Key getDetailOfKey(String keyName);
+
+    List<String> evictKeyByInstance(EvictRequest request);
 }

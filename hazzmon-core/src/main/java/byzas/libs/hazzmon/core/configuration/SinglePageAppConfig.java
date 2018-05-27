@@ -6,15 +6,15 @@ import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.resource.TransformedResource;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author: Created By Sercan CELENK (TCSECELENK) at 23.05.2018
@@ -22,7 +22,7 @@ import java.util.List;
 
 
 @Configuration
-public class SinglePageAppConfig implements WebMvcConfigurer {
+public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
 
     private static final String API_PATH = "/hazzmon-api";
     private static final String PATH_PATTERNS = "/**";
@@ -38,11 +38,16 @@ public class SinglePageAppConfig implements WebMvcConfigurer {
             @Value("${server.context-path:hzmnxx}") String contextPathV1,
             ResourceProperties resourceProperties
     ) {
-        if("hzmnxx".equals(contextPath) && "hzmnxx".equals(contextPathV1)) this.contextPath = "";
-        else if("hzmnxx".equals(contextPath)) this.contextPath = contextPathV1;
-        else if("hzmnxx".equals(contextPathV1)) this.contextPath = contextPath;
+        if ("hzmnxx".equals(contextPath) && "hzmnxx".equals(contextPathV1)) this.contextPath = "";
+        else if ("hzmnxx".equals(contextPath)) this.contextPath = contextPathV1;
+        else if ("hzmnxx".equals(contextPathV1)) this.contextPath = contextPath;
         else this.contextPath = "";
         this.resourceProperties = resourceProperties;
+    }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("Single Page App Config initialized. contextPath = " + this.contextPath);
     }
 
     @Override
@@ -53,7 +58,15 @@ public class SinglePageAppConfig implements WebMvcConfigurer {
                 .addResolver(new SinglePageAppResourceResolver());
     }
 
-
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        InternalResourceViewResolver resolver
+                = new InternalResourceViewResolver();
+        resolver.setPrefix("/META-INF/resources/webjars");
+        resolver.setSuffix(".html");
+        resolver.setViewNames("hazzmon-ui");
+        registry.viewResolver(resolver);
+    }
 
     private class SinglePageAppResourceResolver extends PathResourceResolver {
 
@@ -82,10 +95,12 @@ public class SinglePageAppConfig implements WebMvcConfigurer {
                 return null;
             }
 
-            //we have just refreshed a page, no ?
-            resource = location.createRelative(FRONT_CONTROLLER);
-            if (resource.exists() && resource.isReadable()) {
-                return transformedResource(resource);
+            if (resourcePath.contains("hazzmon-ui.html")) {
+                //we have just refreshed a page, no ?
+                resource = location.createRelative(FRONT_CONTROLLER);
+                if (resource.exists() && resource.isReadable()) {
+                    return transformedResource(resource);
+                }
             }
 
             return null;

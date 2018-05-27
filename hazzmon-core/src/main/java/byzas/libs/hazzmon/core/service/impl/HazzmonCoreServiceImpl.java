@@ -1,13 +1,15 @@
 package byzas.libs.hazzmon.core.service.impl;
 
-import byzas.libs.hazzmon.core.util.SpringApplicationContext;
 import byzas.libs.hazzmon.core.model.*;
 import byzas.libs.hazzmon.core.service.HazzmonCoreService;
+import byzas.libs.hazzmon.core.util.SPAppContext;
 import com.hazelcast.config.MapConfig;
 import com.hazelcast.config.ReplicatedMapConfig;
 import com.hazelcast.core.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -21,8 +23,10 @@ import java.util.stream.Collectors;
 @Service
 class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
 
+    public static final Logger logger = LoggerFactory.getLogger(HazzmonCoreService.class);
+
     @Override
-    public List<ClusterMemberInfo> getInstanceMembers(String instanceBeanName){
+    public List<ClusterMemberInfo> getInstanceMembers(String instanceBeanName) {
         List<ClusterMemberInfo> instanceMembersMap = new ArrayList<>();
         Set<Member> members = new HashSet<>();
         if ("all".equals(instanceBeanName)) {
@@ -48,11 +52,11 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
             memberInfo.setInstanceName(instance.getName());
             memberInfo.setMember(m);
             return memberInfo;
-        }).collect(Collectors.toCollection(()->instanceMembersMap));
+        }).collect(Collectors.toCollection(() -> instanceMembersMap));
     }
 
     @Override
-    public Map<String, Integer> getCounts(String instanceBeanName, String key){
+    public Map<String, Integer> getCounts(String instanceBeanName, String key) {
         int cntInDistributed = 0;
         int cntInReplicated = 0;
         Object beanObject = findHZInstance(instanceBeanName);
@@ -97,20 +101,20 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
     }
 
     @Override
-    public List<HazelcastInstanceInfo> getInstanceNames(){
+    public List<HazelcastInstanceInfo> getInstanceNames() {
         List<HazelcastInstanceInfo> instances = new ArrayList<>();
-        String[] beanNames = SpringApplicationContext.getApplicationContext().getBeanNamesForType(HazelcastInstance.class);
-        if(Objects.nonNull(beanNames)){
-            for(int i = 0; i < beanNames.length; i++){
+        String[] beanNames = SPAppContext.getApplicationContext().getBeanNamesForType(HazelcastInstance.class);
+        if (Objects.nonNull(beanNames)) {
+            for (int i = 0; i < beanNames.length; i++) {
                 String beanName = beanNames[i];
-                HazelcastInstance instance = (HazelcastInstance) SpringApplicationContext.getApplicationContext().getBean(beanName);
+                HazelcastInstance instance = (HazelcastInstance) SPAppContext.getApplicationContext().getBean(beanName);
                 HazelcastInstanceInfo instanceInfo = new HazelcastInstanceInfo();
                 instanceInfo.setBeanName(beanName);
                 instanceInfo.setInstanceName(instance.getName());
                 Map<String, MapConfig> mapConfigs = instance.getConfig().getMapConfigs();
                 Map<String, ReplicatedMapConfig> replicatedMapConfigs = instance.getConfig().getReplicatedMapConfigs();
 
-                if(Objects.nonNull(mapConfigs)){
+                if (Objects.nonNull(mapConfigs)) {
                     instanceInfo.setTotalDistributedMapCount(mapConfigs.size());
                 }
 
@@ -118,19 +122,19 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
                 for (Map.Entry<String, MapConfig> entry : mapConfigs.entrySet()) {
                     MapConfig distributedMapConfig = entry.getValue();
                     Set<Object> mapKeyset = instance.getMap(distributedMapConfig.getName()).keySet();
-                    if(CollectionUtils.isNotEmpty(mapKeyset)) totalKeyCountInDistributedMaps += mapKeyset.size();
+                    if (CollectionUtils.isNotEmpty(mapKeyset)) totalKeyCountInDistributedMaps += mapKeyset.size();
                 }
                 instanceInfo.setTotalKeyCountInDistributedMaps(totalKeyCountInDistributedMaps);
 
-                if(Objects.nonNull(replicatedMapConfigs)){
+                if (Objects.nonNull(replicatedMapConfigs)) {
                     instanceInfo.setTotalReplicatedMapCount(replicatedMapConfigs.size());
                 }
 
                 int totalKeyCountInReplicatedMaps = 0;
                 for (Map.Entry<String, ReplicatedMapConfig> entry : replicatedMapConfigs.entrySet()) {
                     ReplicatedMapConfig replicatedMapConfig = entry.getValue();
-                    Set<Object> mapKeyset = instance.getMap(replicatedMapConfig.getName()).keySet();
-                    if(CollectionUtils.isNotEmpty(mapKeyset)) totalKeyCountInReplicatedMaps += mapKeyset.size();
+                    Set<Object> mapKeyset = instance.getReplicatedMap(replicatedMapConfig.getName()).keySet();
+                    if (CollectionUtils.isNotEmpty(mapKeyset)) totalKeyCountInReplicatedMaps += mapKeyset.size();
                 }
                 instanceInfo.setTotalKeyCountInReplicatedMaps(totalKeyCountInReplicatedMaps);
 
@@ -139,16 +143,19 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
         }
         return instances;
     }
+
     @Override
-    public List<Key> getKeysBy(Optional<String> beanName){
+    public List<Key> getKeysBy(Optional<String> beanName) {
         List<Key> cacheInfos = new ArrayList<>();
+
         if (!beanName.isPresent() || (beanName.isPresent() && "all".equals(beanName.get()))) {
-            String[] hzBeanNames = SpringApplicationContext.getApplicationContext().getBeanNamesForType(HazelcastInstance.class);
-            if(Objects.nonNull(hzBeanNames)){
-                for(int i = 0; i<hzBeanNames.length; i++){
-                    String bean = hzBeanNames[i];
-                    HazelcastInstance instance = (HazelcastInstance) SpringApplicationContext.getApplicationContext().getBean(bean);
-                    cacheInfos.addAll(this.getKeysBy(instance, bean));
+            Set<HazelcastInstance> instances = Hazelcast.getAllHazelcastInstances();
+            if (CollectionUtils.isNotEmpty(instances)) {
+                for (HazelcastInstance instance : instances) {
+                    String[] hzBeanNames = SPAppContext.getApplicationContext().getBeanNamesForType(HazelcastInstance.class);
+                    for (String bean : hzBeanNames) {
+                        cacheInfos.addAll(this.getKeysBy(instance, bean));
+                    }
                 }
             }
         } else {
@@ -165,7 +172,7 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
 
     @Override
     public List<Key> getKeysBy(HazelcastInstance instance, String beanName) {
-        if(Objects.isNull(instance)) return null;
+        if (Objects.isNull(instance)) return null;
 
         List<Key> keys = new ArrayList<>();
 
@@ -195,7 +202,8 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
             mapInfo.setTimeToLiveType(TimeUnit.SECONDS);
             mapInfo.setMapName(replicatedMapConfig.getName());
 
-            Set<Object> mapKeyset = instance.getMap(entry.getValue().getName()).keySet();
+            ReplicatedMap replicatedMap = instance.getReplicatedMap(entry.getValue().getName());
+            Set<Object> mapKeyset = replicatedMap.keySet();
 
             populateKeys(instance, keys, mapInfo, mapKeyset, beanName);
         }
@@ -203,21 +211,28 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
         return keys;
     }
 
+
+    @Override
+    public Object getValueOfKey(String keyName) {
+        Key key = this.getDetailOfKey(keyName);
+        return Objects.nonNull(key) ? key.getValue() : StringUtils.EMPTY;
+    }
+
     @Override
     public Key getDetailOfKey(String keyName) {
         Object value = null;
         Key key = new Key();
 
-        String[] hzBeanNames = SpringApplicationContext.getApplicationContext().getBeanDefinitionNames();
-        for(int j=0; j < hzBeanNames.length; j++){
+        String[] hzBeanNames = SPAppContext.getApplicationContext().getBeanDefinitionNames();
+        for (int j = 0; j < hzBeanNames.length; j++) {
             String hzBeanName = hzBeanNames[j];
-            Object object = SpringApplicationContext.getApplicationContext().getBean(hzBeanName);
+            Object object = SPAppContext.getApplicationContext().getBean(hzBeanName);
 
-            if(object instanceof HazelcastInstance){
-                HazelcastInstance instance = (HazelcastInstance)object;
+            if (object instanceof HazelcastInstance) {
+                HazelcastInstance instance = (HazelcastInstance) object;
 
 
-                for(Map.Entry<String, MapConfig> entry : instance.getConfig().getMapConfigs().entrySet()){
+                for (Map.Entry<String, MapConfig> entry : instance.getConfig().getMapConfigs().entrySet()) {
                     MapConfig mapConfig = entry.getValue();
                     IMap map = instance.getMap(mapConfig.getName());
                     key.setTimeToLiveType(TimeUnit.SECONDS);
@@ -225,11 +240,11 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
                     key.setMapType(MapType.DISTRIBUTED);
                     key.setMapName(mapConfig.getName());
                     value = map.get(keyName);
-                    if(Objects.nonNull(value)) break;
+                    if (Objects.nonNull(value)) break;
                 }
 
-                if(Objects.isNull(value)){
-                    for(Map.Entry<String, ReplicatedMapConfig> entry : instance.getConfig().getReplicatedMapConfigs().entrySet()){
+                if (Objects.isNull(value)) {
+                    for (Map.Entry<String, ReplicatedMapConfig> entry : instance.getConfig().getReplicatedMapConfigs().entrySet()) {
                         ReplicatedMapConfig replicatedMapConfig = entry.getValue();
                         ReplicatedMap map = instance.getReplicatedMap(replicatedMapConfig.getName());
                         key.setTimeToLiveType(TimeUnit.SECONDS);
@@ -237,12 +252,12 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
                         key.setMapType(MapType.REPLICATED);
                         key.setMapName(replicatedMapConfig.getName());
                         value = map.get(keyName);
-                        if(Objects.nonNull(value)) break;
+                        if (Objects.nonNull(value)) break;
                     }
 
                 }
 
-                if(Objects.isNull(value)){
+                if (Objects.isNull(value)) {
                     key = new Key();
                     continue;
                 }
@@ -259,6 +274,97 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
         return key;
     }
 
+    @Override
+    public List<String> evictKeyByInstance(EvictRequest request) {
+        List<String> keysToRemove = new ArrayList<>();
+
+
+        if("all".equals(request.getBean())){
+            Set<HazelcastInstance> instances =  Hazelcast.getAllHazelcastInstances();
+            for(HazelcastInstance instance : instances){
+                if(CollectionUtils.isNotEmpty(request.getKeys())){
+                    for (String key : request.getKeys()){
+                        keysToRemove = prepareKeysForEviction(key, instance);
+                        Set<String> configKeyset = instance.getConfig().getMapConfigs().keySet();
+                        Set<String> replicatedConfigKeyset = instance.getConfig().getReplicatedMapConfigs().keySet();
+                        removeKeys(keysToRemove, instance, configKeyset);
+                        removeKeys(keysToRemove, instance, replicatedConfigKeyset);
+                    }
+                }
+            }
+        }else{
+            Object beanObject = findHZInstance(request.getBean());
+            if (beanObject instanceof HazelcastInstance) {
+                if(CollectionUtils.isNotEmpty(request.getKeys())){
+                    for(String key : request.getKeys()){
+                        HazelcastInstance instance = (HazelcastInstance) beanObject;
+                        keysToRemove = prepareKeysForEviction(key, instance);
+                        Set<String> configKeyset = instance.getConfig().getMapConfigs().keySet();
+                        Set<String> replicatedConfigKeyset = instance.getConfig().getReplicatedMapConfigs().keySet();
+                        removeKeys(keysToRemove, instance, configKeyset);
+                        removeKeys(keysToRemove, instance, replicatedConfigKeyset);
+                    }
+                }
+            }
+        }
+
+        return keysToRemove;
+    }
+
+    private List<String> prepareKeysForEviction(String key, HazelcastInstance instance) {
+        List<String> keysToRemove;
+        final String keyWithoutAsterisk = StringUtils.remove(StringUtils.remove(key, "%"), "*");
+        Set<String> configKeyset = instance.getConfig().getMapConfigs().keySet();
+        Set<String> replicatedConfigKeyset = instance.getConfig().getReplicatedMapConfigs().keySet();
+        keysToRemove = new ArrayList<String>();
+        if (key.startsWith("*") || key.startsWith("%")) {
+            for (Iterator iterator = configKeyset.iterator(); iterator.hasNext(); ) {
+                String configName = (String) iterator.next();
+                keysToRemove.addAll(instance.getMap(configName).keySet().stream().filter(s -> s.toString().contains(keyWithoutAsterisk)).map(s -> s.toString()).collect(Collectors.toList()));
+            }
+            for (Iterator iterator = replicatedConfigKeyset.iterator(); iterator.hasNext(); ) {
+                String configName = (String) iterator.next();
+                keysToRemove.addAll(instance.getReplicatedMap(configName).keySet().stream().filter(s -> s.toString().contains(keyWithoutAsterisk)).map(s -> s.toString()).collect(Collectors.toList()));
+            }
+        } else if (key.endsWith("*") || key.endsWith("%")) {
+            for (Iterator iterator = configKeyset.iterator(); iterator.hasNext(); ) {
+                String configName = (String) iterator.next();
+
+                keysToRemove.addAll(instance.getReplicatedMap(configName).keySet().stream().filter(s -> s.toString().startsWith(keyWithoutAsterisk)).map(s -> s.toString()).collect(Collectors.toList()));
+                keysToRemove.addAll(instance.getMap(configName).keySet().stream().filter(s -> s.toString().startsWith(keyWithoutAsterisk)).map(s -> s.toString()).collect(Collectors.toList()));
+            }
+            for (Iterator iterator = replicatedConfigKeyset.iterator(); iterator.hasNext(); ) {
+                String configName = (String) iterator.next();
+                keysToRemove.addAll(instance.getReplicatedMap(configName).keySet().stream().filter(s -> s.toString().startsWith(keyWithoutAsterisk)).map(s -> s.toString()).collect(Collectors.toList()));
+            }
+        } else {
+            for (Iterator iterator = configKeyset.iterator(); iterator.hasNext(); ) {
+                String configName = (String) iterator.next();
+
+                keysToRemove.addAll(instance.getMap(configName).keySet().stream().filter(s -> s.toString().equals(keyWithoutAsterisk)).map(s -> s.toString()).collect(Collectors.toList()));
+            }
+
+            for (Iterator iterator = replicatedConfigKeyset.iterator(); iterator.hasNext(); ) {
+                String configName = (String) iterator.next();
+
+                keysToRemove.addAll(instance.getReplicatedMap(configName).keySet().stream().filter(s -> s.toString().equals(keyWithoutAsterisk)).map(s -> s.toString()).collect(Collectors.toList()));
+            }
+        }
+        return keysToRemove;
+    }
+
+    private void removeKeys(List<String> keysToRemove, HazelcastInstance instance, Set<String> configKeyset) {
+        for (Iterator iterator = configKeyset.iterator(); iterator.hasNext(); ) {
+            String configName = (String) iterator.next();
+            ReplicatedMap<Object, Object> rMap = instance.getReplicatedMap(configName);
+            IMap<Object, Object> iMap = instance.getMap(configName);
+            for (String kk : keysToRemove) {
+                rMap.remove(kk);
+                iMap.remove(kk);
+            }
+        }
+    }
+
     private void populateKeys(HazelcastInstance instance, List<Key> keys, MapInfo mapInfo, Set<Object> mapKeyset, String beanName) {
         mapKeyset.stream().limit(1500).map(k -> {
             Key key = new Key();
@@ -271,7 +377,7 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
             key.setBeanName(beanName);
             return key;
 
-        }).collect(Collectors.toCollection(()->keys));
+        }).collect(Collectors.toCollection(() -> keys));
     }
 
 

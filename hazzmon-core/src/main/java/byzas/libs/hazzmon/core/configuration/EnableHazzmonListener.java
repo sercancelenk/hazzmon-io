@@ -1,6 +1,5 @@
 package byzas.libs.hazzmon.core.configuration;
 
-import byzas.libs.hazzmon.core.configuration.HazzmonCommonConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;

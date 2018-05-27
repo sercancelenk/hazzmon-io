@@ -2,7 +2,6 @@ package byzas.libs.hazzmon.core.model;
 
 import com.hazelcast.cluster.ClusterState;
 import com.hazelcast.core.Member;
-import com.hazelcast.version.Version;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +10,9 @@ import lombok.Setter;
  * @author: Created By Sercan CELENK (TCSECELENK) at 19.05.2018
  */
 
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class ClusterInfo {
     private ClusterState clusterState;
     private Version version;

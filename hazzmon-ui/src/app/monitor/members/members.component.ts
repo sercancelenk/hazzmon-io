@@ -3,8 +3,7 @@ import {MembersService} from './members.service';
 
 @Component({
   selector: 'app-members',
-  templateUrl: './members.component.html',
-  styleUrls: ['./members.component.css']
+  templateUrl: './members.component.html'
 })
 export class MembersComponent implements OnInit {
 

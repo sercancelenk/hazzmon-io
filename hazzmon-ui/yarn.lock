@@ -333,9 +333,19 @@ amqplib@^0.5.2:
     readable-stream "1.x >=1.1.9"
     safe-buffer "^5.0.1"
 
+angular-autosize@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/angular-autosize/-/angular-autosize-1.0.0.tgz#e5b8e1ab3a23bbcaa3261c4d2ed36f4c517c7ecc"
+
 angular-webstorage-service@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/angular-webstorage-service/-/angular-webstorage-service-1.0.2.tgz#caa21ae8deba822666dc0aaa49124b94a72664ed"
+
+angular2-prettyjson@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/angular2-prettyjson/-/angular2-prettyjson-3.0.1.tgz#476fec59850cb3487f30f19e9f7ed72c7ce557f7"
+  dependencies:
+    tslib "^1.7.1"
 
 angular2-toaster@4.0.1:
   version "4.0.1"

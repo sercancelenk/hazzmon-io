@@ -1,6 +1,6 @@
 package byzas.libs.hazzmon.core.service.impl;
 
-import byzas.libs.hazzmon.core.util.SpringApplicationContext;
+import byzas.libs.hazzmon.core.util.SPAppContext;
 import com.hazelcast.spring.cache.HazelcastCacheManager;
 
 /**
@@ -10,7 +10,7 @@ import com.hazelcast.spring.cache.HazelcastCacheManager;
 
 public abstract class BaseService {
     public Object findHZInstance(String beanName) {
-        Object beanObject = SpringApplicationContext.getApplicationContext().getBean(beanName);
+        Object beanObject = SPAppContext.getApplicationContext().getBean(beanName);
         if (beanObject instanceof HazelcastCacheManager) {
             // Example: hazelcastGenericCache
             HazelcastCacheManager manager = (com.hazelcast.spring.cache.HazelcastCacheManager) beanObject;

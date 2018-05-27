@@ -10,6 +10,9 @@ export class DetailComponent implements OnInit {
 
   public keyName;
   public keyDetail = {};
+  public keyValue = '';
+  public valueItemsHidden = true;
+
 
   constructor(private route: ActivatedRoute,
               private keysService: KeysService) {
@@ -29,5 +32,20 @@ export class DetailComponent implements OnInit {
       .subscribe(response => {
         this.keyDetail = response;
       });
+  }
+
+  getValueOfKey() {
+      this.keysService.getKeyValue(this.keyName)
+          .subscribe(response => {
+            if (response !== undefined) {
+                this.valueItemsHidden = false;
+                this.keyValue = response.value;
+            }
+          });
+  }
+
+  clearValue() {
+    this.keyValue = '';
+    this.valueItemsHidden = true;
   }
 }

@@ -1,5 +1,101 @@
 <div class="padding-template">
-<p>
-  eviction works!
-</p>
+    <div class="card">
+        <div class="card-header">
+            <h5 class=" text-dark"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;eviction</h5>
+            <small style="width: 50% !important;">
+                <i class="fa fa-sticky-note-o" aria-hidden="true"></i>&nbsp;you can evict your keys from your hazelcast
+                cluster
+            </small>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form class="form-inline">
+                        <label class="sr-only" for="inlineFormInputName2">Key Term</label>
+                        <div class="input-group mb-2 mr-sm-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">*, %</div>
+                            </div>
+                            <input type="text" class="form-control" id="inlineFormInputName2" name="inlineFormInputName2" placeholder="[keyname] [keyname*]" [(ngModel)]="keyTermForEviction">
+                        </div>
+                        <button type="button"
+                                class="btn btn-danger mb-2"
+                                [disabled]="keyTermForEviction.length <= 0"
+                                mwlConfirmationPopover
+                                popoverTitle="Eviction Confirm"
+                                popoverMessage = "Are you sure?"
+                                placement="left"
+                                (confirm)="evictForTerm()"
+                                [hidden]="valueItemsHidden"><i class="fa fa-remove"></i>&nbsp;Evict For Term
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p-dataTable [value]="data" sortField="key" sortOrder="1"
+                                 [paginator]="true" [rows]="500" [responsive]="true"
+                                 [loading]="loading" loadingIcon="fa-spinner" #dt
+                                 [(selection)]="selectedKeysForEviction" [headerCheckboxToggleAllPages]="true">
+
+                        <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+                        <p-column [style]="{'width':'18%','padding':'-0.25em !important'}" field="beanName"
+                                  header="Bean Name" [hidden]="false" [filter]="true" filterMatchMode="equals">
+                            <ng-template pTemplate="filter" let-col>
+                                <p-dropdown [options]="beanNames" [style]="{'width':'100%'}"
+                                            (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)"
+                                            styleClass="ui-column-filter"></p-dropdown>
+                            </ng-template>
+                        </p-column>
+                        <p-column [style]="{'width':'18%','padding':'-0.25em !important'}" field="mapName"
+                                  header="Map Name" [hidden]="false" [filter]="true" filterMatchMode="equals">
+                            <ng-template pTemplate="filter" let-col>
+                                <p-dropdown [options]="mapNames" [style]="{'width':'100%'}"
+                                            (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)"
+                                            styleClass="ui-column-filter"></p-dropdown>
+                            </ng-template>
+                        </p-column>
+                        <p-column [style]="{'width':'12%','padding':'-0.25em !important'}" field="mapType"
+                                  header="Map Type" [hidden]="false"></p-column>
+                        <p-column [style]="{'width':'10%','padding':'-0.25em !important'}" align="left">
+                            <ng-template type="header" pTemplate="header">
+                                TTL
+                            </ng-template>
+                            <ng-template let-data="rowData" pTemplate="body">
+                                {{data.timeToLive}} {{data.timeToLiveType}}
+                            </ng-template>
+                        </p-column>
+
+                        <p-column [filter]="true" header="Key Name" field="key" filterMatchMode="contains"
+                                  filterPlaceholder="Search Key"
+                                  [style]="{'width':'26%','padding':'-0.25em !important'}" [sortable]="true"
+                                  [hidden]="false">
+                        </p-column>
+                        <p-column styleClass="col-button text-center"
+                                  [style]="{'width':'3%','padding':'-0.25em !important'}">
+                            <ng-template pTemplate="header">
+                                <button type="button" pButton icon="fa-refresh" class="bg-dark"
+                                        (click)="loadData()"></button>
+                            </ng-template>
+                            <ng-template let-data="rowData" pTemplate="body">
+                                <a class="text-info" [routerLink]="['/hazzmon-ui/key/detail', data.key ]"><i
+                                        class="fa fa-search"></i></a>
+                            </ng-template>
+                        </p-column>
+                        <ng-template pTemplate="paginatorRight">
+                            <button type="button" class="btn btn-danger pull-left" [disabled]="selectedKeysForEviction.length <= 0"
+                                    mwlConfirmationPopover
+                                    popoverTitle="Eviction Confirm"
+                                    popoverMessage = "Are you sure?"
+                                    placement="left"
+                                    (confirm)="evictSelectedKeys()"
+                                    ><i class="fa fa-remove"></i>&nbsp;Evict For Selecteds
+                            </button>
+                        </ng-template>
+                    </p-dataTable>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

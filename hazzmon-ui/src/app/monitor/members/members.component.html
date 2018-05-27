@@ -1,9 +1,9 @@
 <div class="padding-template">
   <div class="card">
     <div class="card-header">
-      <h5 class=" text-dark"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;member</h5>
+      <h5 class=" text-dark"><i class="fa fa-object-group" aria-hidden="true"></i>&nbsp;&nbsp;members</h5>
       <small style="width: 50% !important;">
-        <i class="fa fa-sticky-note-o" aria-hidden="true"></i>&nbsp;You can see members in your hazelcast cluster
+        You can see members in your hazelcast cluster
       </small>
       <button type="button" class="btn btn-dark btn-sm pull-right" (click)="loadData()"><i class="fa fa-refresh"></i></button>
     </div>
@@ -17,14 +17,14 @@
         <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="member.port" header="Port" [hidden]="false"></p-column>
         <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="member.socketAddress" header="SocketAddress" [hidden]="false"></p-column>
         <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="member.inetSocketAddress" header="InetSocketAddress" [hidden]="false"></p-column>
-        <p-column [style]="{'width':'10%','padding':'-0.25em !important'}" align="left">
-          <ng-template type="header" pTemplate="header">
-            Version
-          </ng-template>
-          <ng-template let-members="rowData" pTemplate="body">
-            Major:{{members.member.version.major}} Minor:{{members.member.version.minor}} Patch:{{members.member.version.patch}}
-          </ng-template>
-        </p-column>
+        <!--<p-column [style]="{'width':'10%','padding':'-0.25em !important'}" align="left">-->
+          <!--<ng-template type="header" pTemplate="header">-->
+            <!--Version-->
+          <!--</ng-template>-->
+          <!--<ng-template let-members="rowData" pTemplate="body">-->
+            <!--Major:{{members.member.version.major}} Minor:{{members.member.version.minor}} Patch:{{members.member.version.patch}}-->
+          <!--</ng-template>-->
+        <!--</p-column>-->
         <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="instanceName" header="Instance Name" [hidden]="false"></p-column>
 
       </p-dataTable>

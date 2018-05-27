@@ -4,8 +4,7 @@ import {loadConfigurationFromPath} from 'tslint/lib/configuration';
 
 @Component({
   selector: 'app-instances',
-  templateUrl: './instances.component.html',
-  styleUrls: ['./instances.component.css']
+  templateUrl: './instances.component.html'
 })
 export class InstancesComponent implements OnInit {
 

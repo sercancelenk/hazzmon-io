@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -12,8 +13,10 @@ import java.util.concurrent.TimeUnit;
  */
 
 
-@Getter @Setter @NoArgsConstructor
-public class Key {
+@Getter
+@Setter
+@NoArgsConstructor
+public class Key implements Serializable {
     private String beanName;
     private String instanceName;
     private String mapName;
@@ -24,4 +27,5 @@ public class Key {
     private Object value;
     private Object key;
     private boolean status;
+    private Version version;
 }

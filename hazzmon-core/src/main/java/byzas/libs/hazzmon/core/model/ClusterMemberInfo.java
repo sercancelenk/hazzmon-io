@@ -9,7 +9,9 @@ import lombok.Setter;
  * @author: Created By Sercan CELENK (TCSECELENK) at 19.05.2018
  */
 
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class ClusterMemberInfo {
 
     private String instanceName;
