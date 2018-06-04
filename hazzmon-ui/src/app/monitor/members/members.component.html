@@ -2,22 +2,27 @@
   <div class="card">
     <div class="card-header">
       <h5 class=" text-dark"><i class="fa fa-object-group" aria-hidden="true"></i>&nbsp;&nbsp;members</h5>
-      <small style="width: 50% !important;">
-        You can see members in your hazelcast cluster
-      </small>
+        <span class="font-normal">You can see members in your hazelcast cluster</span>
       <button type="button" class="btn btn-dark btn-sm pull-right" (click)="loadData()"><i class="fa fa-refresh"></i></button>
     </div>
     <div class="card-body">
       <p-dataTable [value]="members" sortField="key" sortOrder="1"
                    [paginator]="true" [rows]="500" [responsive]="true"
-                   [loading]="loading" loadingIcon="fa-spinner" #dd>
-        <p-column [style]="{'width':'5%','padding':'-0.25em !important'}" field="member.id" header="Id" [hidden]="false"></p-column>
+                   [loading]="loading" loadingIcon="fa-spinner" class="font-normal" #dd>
         <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="member.uuid" header="UUID" [hidden]="false"></p-column>
         <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="instanceName" header="Instance Name" [hidden]="false"></p-column>
-        <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="member.inetAddress" header="InetAddress" [hidden]="false"></p-column>
-        <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="member.port" header="Port" [hidden]="false"></p-column>
-        <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="member.socketAddress" header="SocketAddress" [hidden]="false"></p-column>
-        <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="member.inetSocketAddress" header="InetSocketAddress" [hidden]="false"></p-column>
+        <p-column [style]="{'width':'15%','padding':'-0.25em !important'}" field="member.inetAddress" header="InetAddress" [hidden]="false"></p-column>
+        <p-column [style]="{'width':'10%','padding':'-0.25em !important'}" field="member.port" header="Port" [hidden]="false"></p-column>
+        <p-column [style]="{'width':'15%','padding':'-0.25em !important'}" field="member.socketAddress" header="SocketAddress" [hidden]="false"></p-column>
+        <p-column [style]="{'width':'15%','padding':'-0.25em !important'}" field="member.inetSocketAddress" header="InetSocketAddress" [hidden]="false"></p-column>
+          <p-column [style]="{'width':'4%','padding':'-0.25em !important', 'text-align':'center'}" align="">
+              <ng-template type="header" pTemplate="header">
+                  Lite
+              </ng-template>
+              <ng-template let-members="rowData" pTemplate="body">
+                  <span><i [ngClass]="{true:'fa fa-circle text-success',false:'fa fa-circle text-danger'}[members.member.liteMember]"></i></span>
+              </ng-template>
+          </p-column>
         
       </p-dataTable>
 

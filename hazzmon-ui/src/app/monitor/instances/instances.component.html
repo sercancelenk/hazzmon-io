@@ -2,38 +2,86 @@
   <div class="card">
     <div class="card-header">
       <h5 class=" text-dark"><i class="fa fa-server" aria-hidden="true"></i>&nbsp;instances</h5>
-      <small  class=" text-dark" style="width: 50% !important;">
-        <i class="fa fa-sticky-note-o" aria-hidden="true"></i>&nbsp;You can see hazelcast instances in your cluster
-      </small>
+      <span class="font-normal text-dark" style="width: 50% !important;">
+        You can see hazelcast instances in your cluster
+      </span>
       <button type="button" class="btn btn-dark btn-sm pull-right" (click)="loadData()"><i class="fa fa-refresh"></i></button>
     </div>
     <div class="card-body">
       <p-dataTable [value]="instances" sortField="key" sortOrder="1"
                    [paginator]="true" [rows]="500" [responsive]="true"
                    [loading]="loading" loadingIcon="fa-spinner">
-        <p-column [style]="{'width':'25%','padding':'-0.25em !important'}" field="beanName" header="Bean Name" [hidden]="false"></p-column>
-        <p-column [style]="{'width':'30%','padding':'-0.25em !important'}" field="instanceName" header="Instance Name" [hidden]="false"></p-column>
         <p-column [style]="{'width':'45%','padding':'-0.25em !important'}" align="left">
           <ng-template type="header" pTemplate="header">
-            Stats
+            Instance Informations
           </ng-template>
           <ng-template let-instances="rowData" pTemplate="body">
-            <table class="table table-striped">
+            <table class="table table-bordered">
+              <tr class="">
+                <td colspan="2">
+                    <mark class="font-weight-bold font-italic"><i class="fa fa-arrow-circle-right"></i>&nbsp;{{instances.instanceName}}</mark>
+                </td>
+              </tr>
+              <tr>
+                <td>Bean Name</td>
+                <td>{{instances.beanName}}</td>
+              </tr>
+              <tr><td colspan="2"><span class="font-weight-bold font-italic"><i class="fa fa-arrow-circle-right"></i>&nbsp;Map Details</span></td></tr>
               <tr>
                 <td>Distributed Map Count</td>
-                <td><span class="text-dark">:&nbsp;{{instances.totalDistributedMapCount}}</span></td>
+                <td><span class="text-dark font-normal">{{instances.totalDistributedMapCount}}</span></td>
               </tr>
               <tr>
                 <td>Key Count in Distributed Map</td>
-                <td><span class="text-dark">:&nbsp;{{instances.totalKeyCountInDistributedMaps}}</span></td>
+                <td><span class="text-dark font-normal">{{instances.totalKeyCountInDistributedMaps}}</span></td>
               </tr>
               <tr>
                 <td>Replicated Map Count</td>
-                <td><span class="text-dark">:&nbsp;{{instances.totalReplicatedMapCount}}</span></td>
+                <td><span class="text-dark  font-normal">{{instances.totalReplicatedMapCount}}</span></td>
               </tr>
               <tr>
                 <td>Key Count in Replicated Map</td>
-                <td><span class="text-dark">:&nbsp;{{instances.totalKeyCountInReplicatedMaps}}</span></td>
+                <td><span class="text-dark  font-normal">{{instances.totalKeyCountInReplicatedMaps}}</span></td>
+              </tr>
+
+              <tr><td colspan="2"><span class="font-weight-bold font-italic"><i class="fa fa-arrow-circle-right"></i>&nbsp;Discovery Details</span></td></tr>
+
+              <tr *ngIf="instances.discoveryMulticast">
+                <td>Multicast Enable</td>
+                <td><i [ngClass]="{true:'fa fa-circle text-success',false:'fa fa-circle text-danger'}[instances.discoveryMulticast]"></i> </td>
+              </tr>
+              <tr *ngIf="instances.discoveryMulticast">
+                <td>Multicast Group</td>
+                <td>{{instances.multicastConfig.multicastGroup}}</td>
+              </tr>
+              <tr *ngIf="instances.discoveryMulticast">
+                <td>Multicast Port</td>
+                <td>{{instances.multicastConfig.multicastPort}}</td>
+              </tr>
+              <tr *ngIf="instances.discoveryMulticast">
+                <td>Multicast Timeout Seconds</td>
+                <td>{{instances.multicastConfig.multicastTimeoutSeconds}}</td>
+              </tr>
+              <tr *ngIf="instances.discoveryMulticast">
+                <td>Multicast Time To Live Seconds</td>
+                <td>{{instances.multicastConfig.multicastTimeToLive}}</td>
+              </tr>
+
+              <tr *ngIf="instances.discoveryTcpIp">
+                <td>TcpIp Enable</td>
+                <td><i [ngClass]="{true:'fa fa-circle text-success',false:'fa fa-circle text-danger'}[instances.discoveryTcpIp]"></i> </td>
+              </tr>
+              <tr *ngIf="instances.discoveryTcpIp">
+                <td>Members</td>
+                <td>{{instances.tcpIpConfig.members}}</td>
+              </tr>
+              <tr *ngIf="instances.discoveryTcpIp">
+                <td>Required Member</td>
+                <td>{{instances.tcpIpConfig.requiredMember}}</td>
+              </tr>
+              <tr *ngIf="instances.discoveryTcpIp">
+                <td>Connection Timeout Seconds</td>
+                <td>{{instances.tcpIpConfig.connectionTimeoutSeconds}}</td>
               </tr>
             </table>
           </ng-template>

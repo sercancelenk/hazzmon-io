@@ -3,8 +3,8 @@ package byzas.libs.hazzmon.core.service.impl;
 import byzas.libs.hazzmon.core.model.*;
 import byzas.libs.hazzmon.core.service.HazzmonCoreService;
 import byzas.libs.hazzmon.core.util.SPAppContext;
-import com.hazelcast.config.MapConfig;
-import com.hazelcast.config.ReplicatedMapConfig;
+import com.hazelcast.cache.impl.HazelcastServerCachingProvider;
+import com.hazelcast.config.*;
 import com.hazelcast.core.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -47,10 +47,12 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
 
 
     private void populateClusterMembers(List<ClusterMemberInfo> instanceMembersMap, HazelcastInstance instance) {
+
         instance.getCluster().getMembers().stream().map(m -> {
             ClusterMemberInfo memberInfo = new ClusterMemberInfo();
             memberInfo.setInstanceName(instance.getName());
             memberInfo.setMember(m);
+
             return memberInfo;
         }).collect(Collectors.toCollection(() -> instanceMembersMap));
     }
@@ -138,6 +140,20 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
                 }
                 instanceInfo.setTotalKeyCountInReplicatedMaps(totalKeyCountInReplicatedMaps);
 
+                if(instance.getConfig().getNetworkConfig().getJoin().getMulticastConfig().isEnabled()){
+                    MulticastConfig multicastConfig = instance.getConfig().getNetworkConfig().getJoin().getMulticastConfig();
+                    instanceInfo.setDiscoveryMulticast(true);
+                    instanceInfo.setMulticastConfig(multicastConfig);
+                }else if(instance.getConfig().getNetworkConfig().getJoin().getTcpIpConfig().isEnabled()){
+                    TcpIpConfig tcpIpConfig = instance.getConfig().getNetworkConfig().getJoin().getTcpIpConfig();
+                    instanceInfo.setDiscoveryTcpIp(true);
+                    instanceInfo.setTcpIpConfig(tcpIpConfig);
+                }else if(instance.getConfig().getNetworkConfig().getJoin().getAwsConfig().isEnabled()){
+                    AwsConfig awsConfig = instance.getConfig().getNetworkConfig().getJoin().getAwsConfig();
+                    instanceInfo.setDiscoveryAws(true);
+                    instanceInfo.setAwsConfig(awsConfig);
+                }
+
                 instances.add(instanceInfo);
             }
         }
@@ -187,9 +203,10 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
             mapInfo.setTimeToLive(distributedMapConfig.getTimeToLiveSeconds());
             mapInfo.setTimeToLiveType(TimeUnit.SECONDS);
             mapInfo.setMapName(distributedMapConfig.getName());
-
             Set<Object> mapKeyset = instance.getMap(entry.getValue().getName()).keySet();
             populateKeys(instance, keys, mapInfo, mapKeyset, beanName);
+
+
 
 
         }
@@ -206,6 +223,7 @@ class HazzmonCoreServiceImpl extends BaseService implements HazzmonCoreService {
             Set<Object> mapKeyset = replicatedMap.keySet();
 
             populateKeys(instance, keys, mapInfo, mapKeyset, beanName);
+
         }
 
         return keys;

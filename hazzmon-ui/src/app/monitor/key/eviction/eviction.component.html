@@ -2,42 +2,47 @@
     <div class="card">
         <div class="card-header">
             <h5 class=" text-dark"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;eviction</h5>
-            <small style="width: 50% !important;">
-                <i class="fa fa-sticky-note-o" aria-hidden="true"></i>&nbsp;you can evict your keys from your hazelcast
+            <span class="font-normal">
+                you can evict your keys from your hazelcast
                 cluster
-            </small>
+            </span>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <form class="form-inline">
-                        <label class="sr-only" for="inlineFormInputName2">Key Term</label>
-                        <div class="input-group mb-2 mr-sm-2">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">*, %</div>
+                    <form>
+                        <div class="form-group row">
+                            <label for="colFormLabelSm" class="col-md-1 col-form-label col-form-label-sm">Key Name</label>
+                            <div class="col-md-9">
+                                <input #gb type="text" pInputText  class="form-control form-control-sm" id="colFormLabelSm" name="colFormLabelSm" placeholder="Type key name with wildcard" [(ngModel)]="keyTermForEviction">
                             </div>
-                            <input type="text" class="form-control" id="inlineFormInputName2" name="inlineFormInputName2" placeholder="[keyname] [keyname*]" [(ngModel)]="keyTermForEviction">
+                            <div class="col-sm-2">
+                                <button type="button"
+                                        class="btn btn-danger btn-sm float-left"
+                                        [disabled]="keyTermForEviction.length <= 0"
+                                        mwlConfirmationPopover
+                                        popoverTitle="Eviction Confirm"
+                                        popoverMessage = "Are you sure?"
+                                        placement="left"
+                                        (confirm)="evictForTerm()"
+                                        [hidden]="valueItemsHidden"><i class="fa fa-remove"></i>&nbsp;Evict For Term
+                                </button>
+                            </div>
                         </div>
-                        <button type="button"
-                                class="btn btn-danger mb-2"
-                                [disabled]="keyTermForEviction.length <= 0"
-                                mwlConfirmationPopover
-                                popoverTitle="Eviction Confirm"
-                                popoverMessage = "Are you sure?"
-                                placement="left"
-                                (confirm)="evictForTerm()"
-                                [hidden]="valueItemsHidden"><i class="fa fa-remove"></i>&nbsp;Evict For Term
-                        </button>
                     </form>
-
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"><hr></div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <p-dataTable [value]="data" sortField="key" sortOrder="1"
                                  [paginator]="true" [rows]="500" [responsive]="true"
                                  [loading]="loading" loadingIcon="fa-spinner" #dt
-                                 [(selection)]="selectedKeysForEviction" [headerCheckboxToggleAllPages]="true">
+                                 [(selection)]="selectedKeysForEviction"
+                                 [headerCheckboxToggleAllPages]="true" class="font-normal"
+                                 [globalFilter]="gb">
 
                         <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
                         <p-column [style]="{'width':'18%','padding':'-0.25em !important'}" field="beanName"
@@ -84,7 +89,8 @@
                             </ng-template>
                         </p-column>
                         <ng-template pTemplate="paginatorRight">
-                            <button type="button" class="btn btn-danger pull-left" [disabled]="selectedKeysForEviction.length <= 0"
+                            <button type="button" class="btn btn-danger btn-sm pull-left"
+                                    [hidden]="selectedKeysForEviction.length <= 0"
                                     mwlConfirmationPopover
                                     popoverTitle="Eviction Confirm"
                                     popoverMessage = "Are you sure?"

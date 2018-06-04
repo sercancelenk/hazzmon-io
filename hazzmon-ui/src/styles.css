@@ -13,3 +13,11 @@ body {
 .nopadding {
   padding: -0.25em !important;
 }
+
+body > table > tr > td {
+  font-size: 15px !important;
+}
+
+.font-normal {
+  font-size: 15px !important;
+}

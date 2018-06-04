@@ -13,7 +13,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ClusterMemberInfo {
-
     private String instanceName;
     private Member member;
 }

@@ -12,9 +12,10 @@ import {MembersService} from './monitor/members/members.service';
 import {InstancesService} from './monitor/instances/instances.service';
 import {UrlutilService} from './monitor/common/service/urlutil.service';
 import {PrettyJsonModule} from 'angular2-prettyjson';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
-  declarations: [AppComponent, AppNavbarComponent],
+  declarations: [AppComponent, AppNavbarComponent, FooterComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
