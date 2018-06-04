@@ -69,7 +69,7 @@ If you find this repository helpful, you may make a donation to me via email.
 
 This library is initially created and maintained by [sercancelenk](https://github.com/sercancelenk)
 
-Special thanks to [Caner Kurtul]
+Special thanks to [Caner Kurtul](https://github.com/canerkurtul)
 
 # Change Log
 
